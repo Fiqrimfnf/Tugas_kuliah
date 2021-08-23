@@ -1,0 +1,27 @@
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>dark mode menu</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="theme-switch">
+        <div class="switch"></div>
+    </div>
+    <div class="navigation">
+    <ul>
+        <a href="" class="active">Home</a>
+        <a href="">About Us</a>
+        <a href="">Gallery</a>
+        <a href="">Our Team</a>
+        <a href="">Testimony</a>
+    </ul>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+    <script>
+        $(".theme-switch").on("click", () => {
+            $("body").toggleClass("light-theme");
+        });
+    </script>
+</body>
+</html>

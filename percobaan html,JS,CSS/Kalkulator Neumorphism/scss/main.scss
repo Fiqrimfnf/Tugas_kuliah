@@ -1,0 +1,97 @@
+$primary-color: #c16fff;
+$bg-color: #eaebf3;
+$delete-color: #ff8095;
+$text-color: #707070;
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    outline: none;
+}
+
+body {
+    font-family: 'Poppins', Arial, 'Helvetica Neue', Helvetica, sans-serif;
+    min-height: 100vh;
+    background-color: $bg-color;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    div.container {
+        box-shadow: 6px 6px 10px rgba($color: #000000, $alpha: 0.1),
+            -6px -6px 10px rgba($color: #ffffff, $alpha: 0.5);
+        border-radius: 30px;
+        padding: 2.5rem 2rem;
+
+        input#input {
+            height: 100px;
+            width: 100%;
+            margin-bottom: 60px;
+            border: none;
+            background-color: $bg-color;
+            border-radius: 50px;
+            box-shadow: inset 6px 6px 10px rgba($color: #000000, $alpha: 0.1),
+                inset -6px -6px 10px rgba($color: #ffffff, $alpha: 0.5);
+            color: $primary-color;
+            font-size: 2rem;
+            padding: 0 2rem;
+            text-align: right;
+        }
+
+        div#buttons {
+            display: grid;
+            grid-template-columns: repeat(4, 80px);
+            justify-content: center;
+            align-items: center;
+            gap: 35px;
+
+            button {
+                color: $text-color;
+                font-size: 2rem;
+                cursor: pointer;
+                width: 80px;
+                height: 80px;
+                background: none;
+                border: none;
+                border-radius: 50%;
+                box-shadow: 6px 6px 10px rgba($color: #000000, $alpha: 0.1),
+                    -6px -6px 10px rgba($color: #ffffff, $alpha: 0.5);
+                transition: 0.3s;
+
+                &.all-clear {
+                    border-radius: 50px;
+                    width: 100%;
+                    grid-column: 1 / 3;
+                    color: $delete-color;
+                }
+
+                &.delete {
+                    color: $delete-color;
+                }
+
+                &.middle-dot {
+                    font-size: 5rem;
+                }
+
+                &.equals {
+                    border-radius: 50px;
+                    width: 100%;
+                    grid-column: 3 / 5;
+                    color: $primary-color;
+                }
+
+                &:hover {
+                    color: $primary-color;
+                }
+
+                &:active {
+                    outline: none;
+                    box-shadow: inset 6px 6px 10px
+                            rgba($color: #000000, $alpha: 0.1),
+                        inset -6px -6px 10px rgba($color: #ffffff, $alpha: 0.5);
+                }
+            }
+        }
+    }
+}

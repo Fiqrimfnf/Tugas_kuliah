@@ -1,0 +1,177 @@
+<html>
+<head>
+  <title>fiqri animasi confetti</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.5.7/p5.min.js"></script>
+  <style>
+      html,
+body {
+  height: 100%;
+}
+
+body {
+  color: #222;
+  background: #ededed;
+  line-height: 1.3;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+canvas {
+  border: 1px solid silver;
+  background: white;
+    cursor: -webkit-grab;
+  display: block;
+}
+  </style>
+<head>
+<body>
+  <script>
+      let incoming, form, press;
+
+let conColor = [
+  '#f44336', '#e91e63', '#9c27b0', '#673ab7', '#3f51b5',
+  '#2196f3', '#03a9f4', '#00bcd4', '#009688', '#4CAF50',
+  '#8BC34A', '#CDDC39', '#FFEB3B', '#FFC107', '#FF9800',
+  '#FF5722'
+];
+
+class Particle {
+  constructor(parent) {
+    this.parent = parent;
+    this.gravity = parent.gravity;
+    this.reinit();
+    this.shape = round(random(0, 1));
+    this.steps = 0;
+    this.outlet = 0;
+    this.outFact = random(-0.02, 0.02);
+    this.mulFact = random(0.01, 0.08);
+    this.outAngle = 0;
+    this.outSpeed = 0.05;
+  }
+  
+  reinit() {
+
+    this.position = this.parent.position.copy();
+    this.position.y = random(-20, -100);
+    this.position.x = random(0, width);
+    this.velocity = createVector(random(-6, 6), random(-10, 2));
+    this.friction = random(0.995, 0.98);
+    this.size = round(random(5, 15));
+    this.half = this.size / 2;
+    this.col = color(random(conColor));
+
+  }
+  
+  obj()
+  {
+    this.steps = 0.5 + Math.sin(this.velocity.y * 20) * 0.5;
+    this.outlet = this.outFact + Math.cos(this.outAngle) * this.mulFact;
+    this.outAngle += this.outSpeed;
+    translate(this.position.x, this.position.y);
+    rotate(this.velocity.x * 2);
+    scale(1, this.steps);
+    noStroke();
+    fill(this.col);
+      if (this.shape === 0) {
+        rect(-this.half, -this.half, this.size, this.size);
+      } else {
+        ellipse(0, 0, this.size, this.size);
+      }
+    resetMatrix();
+  }
+  
+  integration() {
+    this.velocity.add(this.gravity);
+    this.velocity.x += this.outlet;
+    this.velocity.mult(this.friction);
+    this.position.add(this.velocity);
+    if (this.position.y > height) {
+      this.reinit();
+    }
+    if (this.position.x < 0) {
+      this.reinit();
+    }
+    if (this.position.x > width + 10) {
+      this.reinit();
+    }
+  }
+  render() {
+    this.integration();
+    this.obj();
+
+  }
+}
+
+class particleSystem {
+  constructor(maximum, position, gravity) {
+    this.position = position.copy();
+    this.maximum = maximum;
+    this.gravity = createVector(0, 0.1);
+    this.friction = 0.98;
+    this.particle = [];
+    for (var i = 0; i < this.maximum; i++) {
+      this.particle.push(new Particle(this));
+    }
+  }
+  
+  render() {
+    if (press) {
+      var force = p5.Vector.sub(incoming, form);
+      this.gravity.x = force.x / 20;
+      this.gravity.y = force.y / 20;
+    }
+    this.particle.forEach(particle => particle.render());
+  }
+}
+let confettis;
+
+function setup() {
+  createCanvas(windowWidth, windowHeight);
+  frameRate(60);
+  form = createVector(0, 0);
+  incoming = createVector(0, 0);
+  confettis = new particleSystem(500, createVector(width / 2, -20));
+}
+
+function draw() {
+  background(color("#111"));
+  incoming.x = mouseX;
+  incoming.y = mouseY;
+  confettis.render();
+  header();
+  form.x = incoming.x;
+  form.y = incoming.y;
+}
+
+function header(){
+    fill(color("#111"));
+    rect(0,0,width,100);
+    fill(255);
+    textFont('Segoe UI');
+    textSize(50);
+    textAlign(CENTER);
+    text("fiqri animasi confetti", width/2, 60);
+}
+
+function windowResized() {
+  resizeCanvas(windowWidth, windowHeight);
+  confettis.position = createVector(width / 2, -40);
+}
+
+function mousePressed() {
+  next = 0;
+  press = true;
+}
+
+function mouseReleased() {
+  press = false;
+  confettis.gravity.y = 0.1;
+  confettis.gravity.x = 0;
+}
+  </script>
+</body>
+</html>
